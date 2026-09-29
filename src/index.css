@@ -1,1 +1,21 @@
 @import "tailwindcss";
+
+@layer base {
+  html,
+  body {
+    /* Pas de pull-to-refresh, pas de zoom au double tap, pas de sélection au appui long */
+    overscroll-behavior: none;
+    touch-action: manipulation;
+    user-select: none;
+  }
+
+  /* Le metteur en scène doit pouvoir sélectionner son texte */
+  textarea {
+    user-select: text;
+  }
+
+  :focus-visible {
+    outline: 4px solid #fff;
+    outline-offset: 2px;
+  }
+}
