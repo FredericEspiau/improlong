@@ -2,6 +2,7 @@ import type { RunningState, ShowAction } from "../domain/show";
 import type { Trame } from "../domain/trame";
 
 import { formatClock, formatCountdown, formatDrift } from "../domain/format";
+import { messageFontSizeVw } from "../domain/messageSize";
 import { computeTimers } from "../domain/timers";
 import { useNow } from "../state/useNow";
 
@@ -20,7 +21,12 @@ export function PlayScreen({ dispatch, state, trame }: PlayScreenProps) {
   if (state.message !== null) {
     return (
       <main className="flex h-dvh flex-col items-center justify-center gap-12 p-8">
-        <p className="text-center text-8xl font-bold">{state.message}</p>
+        <p
+          className="max-w-full text-center leading-tight font-bold wrap-break-word"
+          style={{ fontSize: `${String(messageFontSizeVw(state.message))}vw` }}
+        >
+          {state.message}
+        </p>
         <EditionButton onClick={openEdition} />
       </main>
     );

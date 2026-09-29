@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, test, vi } from "vitest";
 
 import type { RunningState } from "../domain/show";
@@ -83,6 +83,22 @@ describe("PlayScreen", () => {
     expect(screen.queryByText("Scène suivante")).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Terminer" }));
     expect(dispatch).toHaveBeenCalledWith({ now: T0 + 6 * MIN, type: "next" });
+  });
+
+  test("message : un message court est affiché plus gros qu'un long", () => {
+    renderAt(T0, running({ message: "Vite !" }));
+    const shortSize = screen.getByText("Vite !").style.fontSize;
+    cleanup();
+    renderAt(
+      T0,
+      running({
+        message:
+          "Le personnage principal doit enfin révéler son secret au public",
+      }),
+    );
+    const longSize = screen.getByText(/personnage principal/).style.fontSize;
+    expect(shortSize).toBe("16vw");
+    expect(longSize).toBe("6.5vw");
   });
 
   test("message : n'affiche que le message et le bouton Édition", () => {
