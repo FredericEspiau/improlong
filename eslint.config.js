@@ -13,6 +13,7 @@ import sonarjs from "eslint-plugin-sonarjs";
 import eslintPluginUnicorn from "eslint-plugin-unicorn";
 import { defineConfig } from "eslint/config";
 import globals from "globals";
+import { fileURLToPath } from "node:url";
 import tseslint from "typescript-eslint";
 
 const gitignorePath = fileURLToPath(new URL(".gitignore", import.meta.url));
@@ -28,7 +29,7 @@ const GLOB_EXCLUDE = [
 ];
 
 export default defineConfig(
-  // Global ignores (from nearest .gitignore in directory tree)
+  // Global ignores (from project .gitignore)
   includeIgnoreFile(gitignorePath),
 
   eslint.configs.recommended,
