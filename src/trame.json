@@ -1,0 +1,7 @@
+{
+  "scenes": [
+    { "name": "Introduction", "duration": "PT5M" },
+    { "name": "Milieu", "duration": "PT35M" },
+    { "name": "Fin", "duration": "PT5M" }
+  ]
+}
