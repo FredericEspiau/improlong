@@ -67,7 +67,7 @@ public/favicon.svg           source des icônes PWA
 
 ---
 
-### Tâche 1 : squelette Vite + React + Tailwind + Vitest
+### Task 1: squelette Vite + React + Tailwind + Vitest
 
 **Files :**
 - Modify : `package.json`, `tsconfig.json`, `eslint.config.js`
@@ -252,7 +252,7 @@ git commit -m "chore: scaffold Vite, React, Tailwind and Vitest"
 
 ---
 
-### Tâche 2 : parsing des durées et de la trame
+### Task 2: parsing des durées et de la trame
 
 **Files :**
 - Create : `src/domain/duration.ts`, `src/domain/duration.test.ts`, `src/domain/trame.ts`, `src/domain/trame.test.ts`, `src/trame.json`
@@ -450,7 +450,7 @@ git commit -m "feat: parse ISO 8601 durations and the show trame"
 
 ---
 
-### Tâche 3 : formatage des temps
+### Task 3: formatage des temps
 
 **Files :**
 - Create : `src/domain/format.ts`, `src/domain/format.test.ts`
@@ -545,7 +545,7 @@ git commit -m "feat: format clocks and drift"
 
 ---
 
-### Tâche 4 : reducer de l'état du spectacle
+### Task 4: reducer de l'état du spectacle
 
 **Files :**
 - Create : `src/domain/show.ts`, `src/domain/show.test.ts`
@@ -816,7 +816,7 @@ git commit -m "feat: add show state reducer with drift tracking"
 
 ---
 
-### Tâche 5 : calcul des timers
+### Task 5: calcul des timers
 
 **Files :**
 - Create : `src/domain/timers.ts`, `src/domain/timers.test.ts`
@@ -968,7 +968,7 @@ git commit -m "feat: compute show and scene timers"
 
 ---
 
-### Tâche 6 : sauvegarde et hooks d'état
+### Task 6: sauvegarde et hooks d'état
 
 **Files :**
 - Create : `src/state/persistence.ts`, `src/state/persistence.test.ts`, `src/state/useShow.ts`, `src/state/useNow.ts`
@@ -1181,7 +1181,7 @@ git commit -m "feat: persist show state in localStorage"
 
 ---
 
-### Tâche 7 : écrans préparation et jeu
+### Task 7: écrans préparation et jeu
 
 **Files :**
 - Create : `src/screens/PreparationScreen.tsx`, `src/screens/PlayScreen.tsx`, `src/screens/PlayScreen.test.tsx`
@@ -1419,7 +1419,7 @@ git commit -m "feat: add preparation and play screens"
 
 ---
 
-### Tâche 8 : écrans édition et fin, assemblage dans App
+### Task 8: écrans édition et fin, assemblage dans App
 
 **Files :**
 - Create : `src/screens/EditionScreen.tsx`, `src/screens/EndScreen.tsx`
@@ -1729,7 +1729,7 @@ git commit -m "feat: add edition and end screens, wire up App"
 
 ---
 
-### Tâche 9 : PWA hors-ligne et écran toujours allumé
+### Task 9: PWA hors-ligne et écran toujours allumé
 
 **Files :**
 - Create : `src/state/useWakeLock.ts`, `public/favicon.svg`, `pwa-assets.config.ts`
