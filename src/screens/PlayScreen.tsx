@@ -37,7 +37,7 @@ export function PlayScreen({ dispatch, state, trame }: PlayScreenProps) {
   const drift = formatDrift(timers.driftMs);
 
   return (
-    <main className="grid h-dvh grid-rows-[auto_1fr_auto] gap-6 p-6">
+    <main className="grid h-dvh grid-rows-[auto_minmax(0,1fr)_auto] gap-6 p-6">
       <section className="grid grid-cols-2 gap-6">
         <div
           className={`rounded-2xl bg-surface p-6 ${timers.nextScene === null ? "col-span-2" : ""}`}
@@ -53,7 +53,7 @@ export function PlayScreen({ dispatch, state, trame }: PlayScreenProps) {
         )}
       </section>
 
-      <section className="flex flex-col justify-center gap-6">
+      <section className="flex min-h-0 flex-col justify-center-safe gap-6 overflow-hidden [container-type:size]">
         <Clock
           countdown
           label="Reste scène"
@@ -137,7 +137,7 @@ function Clock({
       </span>
       <span
         aria-label={label}
-        className={`font-mono leading-none font-bold tabular-nums ${size === "hero" ? "text-[min(18vw,28vh)]" : "text-[5vw]"} ${TEXT_CLASS[tone]}`}
+        className={`font-mono leading-none font-bold tabular-nums ${size === "hero" ? "text-[max(8rem,min(18vw,calc(100cqh_-_13rem)))]" : "text-[5vw]"} ${TEXT_CLASS[tone]}`}
         role="timer"
       >
         {countdown ? formatCountdown(ms) : formatClock(ms)}

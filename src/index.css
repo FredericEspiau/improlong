@@ -22,6 +22,7 @@
     overscroll-behavior: none;
     touch-action: manipulation;
     user-select: none;
+    -webkit-tap-highlight-color: transparent;
   }
 
   /* Le metteur en scène doit pouvoir sélectionner son texte */

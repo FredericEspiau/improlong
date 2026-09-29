@@ -112,7 +112,7 @@ describe("PlayScreen", () => {
   test("hiérarchie : 'Reste scène' est l'horloge principale, les autres sont plus petites", () => {
     renderAt(T0 + MIN, running());
     expect(screen.getByLabelText("Reste scène")).toHaveClass(
-      "text-[min(18vw,28vh)]",
+      "text-[max(8rem,min(18vw,calc(100cqh_-_13rem)))]",
     );
     for (const label of [
       "Écoulé scène",
@@ -169,5 +169,16 @@ describe("PlayScreen", () => {
     expect(screen.getByText("Scène actuelle").parentElement).not.toHaveClass(
       "col-span-2",
     );
+  });
+
+  test("le timer principal s'adapte à la place restante, même avec un long nom de scène", () => {
+    renderAt(T0, running({ sceneIndex: 0 }));
+    const middle = screen.getByRole("progressbar").parentElement;
+    expect(middle).toHaveClass(
+      "min-h-0",
+      "overflow-hidden",
+      "justify-center-safe",
+    );
+    expect(middle?.className).toContain("[container-type:size]");
   });
 });

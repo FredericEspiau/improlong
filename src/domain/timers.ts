@@ -20,15 +20,15 @@ export interface Timers {
 }
 
 /**
-Temps restant du spectacle = temps restant prévu de la scène en cours (jamais sous 0)
-+ durées des scènes suivantes. Le retard d'une scène en dépassement sera compté
-dans le glissement au passage de scène, pas ici.
-*/
-/**
 Il reste moins d'une minute : la scène passe en ambre.
 */
 export const WARNING_MS = 60_000;
 
+/**
+Temps restant du spectacle = temps restant prévu de la scène en cours (jamais sous 0)
++ durées des scènes suivantes. Le retard d'une scène en dépassement sera compté
+dans le glissement au passage de scène, pas ici.
+*/
 export function computeTimers(
   state: RunningState,
   trame: Trame,

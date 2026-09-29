@@ -11,6 +11,10 @@ describe("robustesse tactile", () => {
     expect(css).toContain("user-select: none");
   });
 
+  test("pas de flash bleu Android au toucher", () => {
+    expect(css).toContain("-webkit-tap-highlight-color: transparent");
+  });
+
   test("la zone de saisie reste sélectionnable", () => {
     expect(css).toMatch(/textarea\s*\{[^}]*user-select:\s*text/);
   });

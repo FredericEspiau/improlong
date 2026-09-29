@@ -57,6 +57,7 @@ describe("App", () => {
     click("Retour au jeu");
     expect(screen.getByText("Accélérez")).toBeInTheDocument();
     click("Édition");
+    advance(700);
     click("Cacher le message");
     click("Retour au jeu");
     expect(screen.queryByText("Accélérez")).not.toBeInTheDocument();
@@ -141,9 +142,44 @@ describe("App", () => {
     expect(
       screen.queryByRole("button", { name: "Accélérez" }),
     ).not.toBeInTheDocument();
+    advance(700);
     click("Cacher le message");
     expect(
       screen.getByRole("button", { name: "Accélérez" }),
     ).toBeInTheDocument();
+  });
+
+  test("double tap sur Cacher : le message rapide dessous n'est pas déclenché", () => {
+    render(<App trame={testTrame} />);
+    click("Démarrer");
+    click("Édition");
+    click("Ralentissez");
+    advance(700);
+    click("Cacher le message");
+    click("Changez de lieu");
+    expect(
+      screen.queryByText("Message affiché : Changez de lieu"),
+    ).not.toBeInTheDocument();
+    advance(700);
+    click("Changez de lieu");
+    expect(
+      screen.getByText("Message affiché : Changez de lieu"),
+    ).toBeInTheDocument();
+  });
+
+  test("double tap sur un message rapide : il n'est pas caché aussitôt", () => {
+    render(<App trame={testTrame} />);
+    click("Démarrer");
+    click("Édition");
+    click("Ralentissez");
+    click("Cacher le message");
+    expect(
+      screen.getByText("Message affiché : Ralentissez"),
+    ).toBeInTheDocument();
+    advance(700);
+    click("Cacher le message");
+    expect(
+      screen.queryByText("Message affiché : Ralentissez"),
+    ).not.toBeInTheDocument();
   });
 });

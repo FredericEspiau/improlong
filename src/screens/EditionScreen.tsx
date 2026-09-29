@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import type { ShowAction } from "../domain/show";
 
@@ -9,8 +9,28 @@ interface EditionScreenProps {
   readonly message: null | string;
 }
 
+/**
+"Cacher le message" et les messages rapides occupent la même zone de l'écran : un double appui
+accidentel sur l'un déclencherait l'autre. Après un changement de message, on ignore les appuis un court instant.
+*/
+const MESSAGE_TAP_GUARD_MS = 600;
+
 export function EditionScreen({ dispatch, message }: EditionScreenProps) {
   const [draft, setDraft] = useState("");
+  const previousMessage = useRef(message);
+  const changedAt = useRef(-Infinity);
+
+  useEffect(() => {
+    if (previousMessage.current === message) {
+      return;
+    }
+
+    previousMessage.current = message;
+    changedAt.current = Date.now();
+  }, [message]);
+
+  const isSettled = () =>
+    Date.now() - changedAt.current >= MESSAGE_TAP_GUARD_MS;
 
   return (
     <main className="flex h-dvh flex-col gap-6 p-8">
@@ -24,7 +44,9 @@ export function EditionScreen({ dispatch, message }: EditionScreenProps) {
                 className="min-h-16 rounded-xl bg-line px-6 py-4 text-3xl font-bold active:brightness-125"
                 key={quick}
                 onClick={() => {
-                  dispatch({ text: quick, type: "showMessage" });
+                  if (isSettled()) {
+                    dispatch({ text: quick, type: "showMessage" });
+                  }
                 }}
                 type="button"
               >
@@ -63,7 +85,9 @@ export function EditionScreen({ dispatch, message }: EditionScreenProps) {
           <button
             className="rounded-xl bg-danger-strong px-8 py-4 text-3xl"
             onClick={() => {
-              dispatch({ type: "hideMessage" });
+              if (isSettled()) {
+                dispatch({ type: "hideMessage" });
+              }
             }}
             type="button"
           >
