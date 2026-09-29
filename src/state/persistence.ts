@@ -1,31 +1,48 @@
 import type { ShowState } from "../domain/show";
+import type { Trame } from "../domain/trame";
 
 import { initialState } from "../domain/show";
 
 export const STORAGE_KEY = "improlong:show:v1";
 
 /**
-Relit l'état sauvegardé. Au moindre doute, repart en préparation plutôt que d'afficher un écran cassé.
+Relit l'état sauvegardé. Au moindre doute (trame modifiée depuis, données illisibles),
+repart en préparation plutôt que d'afficher un écran cassé ou une trame qui ne correspond plus.
 */
-export function loadState(sceneCount: number): ShowState {
+export function loadState(trame: Trame): ShowState {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw === null) {
       return initialState;
     }
     const parsed: unknown = JSON.parse(raw);
-    return isValidState(parsed, sceneCount) ? parsed : initialState;
+    if (!isRecord(parsed) || parsed.fingerprint !== fingerprint(trame)) {
+      return initialState;
+    }
+    return isValidState(parsed.state, trame.scenes.length)
+      ? parsed.state
+      : initialState;
   } catch {
     return initialState;
   }
 }
 
-export function saveState(state: ShowState): void {
+export function saveState(state: ShowState, trame: Trame): void {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({ fingerprint: fingerprint(trame), state }),
+    );
   } catch {
     // Stockage indisponible : le spectacle continue, seule la reprise après rechargement est perdue
   }
+}
+
+/**
+Identifie la trame : si elle change entre deux déploiements, l'état sauvegardé n'est plus valable.
+*/
+function fingerprint(trame: Trame): string {
+  return JSON.stringify(trame.scenes);
 }
 
 function isFiniteNumber(value: unknown): value is number {

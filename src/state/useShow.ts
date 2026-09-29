@@ -12,11 +12,11 @@ export function useShow(
   const [state, dispatch] = useReducer(
     (current: ShowState, action: ShowAction) =>
       reduceShow(current, action, trame),
-    trame.scenes.length,
+    trame,
     loadState,
   );
   useEffect(() => {
-    saveState(state);
-  }, [state]);
+    saveState(state, trame);
+  }, [state, trame]);
   return [state, dispatch] as const;
 }
