@@ -1,7 +1,7 @@
 import type { RunningState, ShowAction } from "../domain/show";
 import type { Trame } from "../domain/trame";
 
-import { formatClock, formatDrift } from "../domain/format";
+import { formatClock, formatCountdown, formatDrift } from "../domain/format";
 import { computeTimers } from "../domain/timers";
 import { useNow } from "../state/useNow";
 
@@ -48,9 +48,10 @@ export function PlayScreen({ dispatch, state, trame }: PlayScreenProps) {
 
       <section className="grid grid-cols-2 place-content-center gap-8">
         <Clock label="Écoulé spectacle" ms={timers.elapsedMs} />
-        <Clock label="Reste spectacle" ms={timers.showRemainingMs} />
+        <Clock countdown label="Reste spectacle" ms={timers.showRemainingMs} />
         <Clock label="Écoulé scène" ms={timers.sceneElapsedMs} />
         <Clock
+          countdown
           danger={timers.sceneRemainingMs < 0}
           label="Reste scène"
           ms={timers.sceneRemainingMs}
@@ -83,10 +84,12 @@ export function PlayScreen({ dispatch, state, trame }: PlayScreenProps) {
 }
 
 function Clock({
+  countdown = false,
   danger = false,
   label,
   ms,
 }: {
+  readonly countdown?: boolean;
   readonly danger?: boolean;
   readonly label: string;
   readonly ms: number;
@@ -99,7 +102,7 @@ function Clock({
         className={`font-mono text-7xl font-bold tabular-nums ${danger ? "text-red-500" : ""}`}
         role="timer"
       >
-        {formatClock(ms)}
+        {countdown ? formatCountdown(ms) : formatClock(ms)}
       </span>
     </div>
   );

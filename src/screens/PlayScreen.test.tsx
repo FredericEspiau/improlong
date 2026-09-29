@@ -47,6 +47,19 @@ describe("PlayScreen", () => {
     expect(screen.getByLabelText("Reste spectacle")).toHaveTextContent("14:00");
   });
 
+  test("au départ, les temps restants affichent la durée pleine", () => {
+    renderAt(T0 + 400, running());
+    expect(screen.getByLabelText("Reste scène")).toHaveTextContent("5:00");
+    expect(screen.getByLabelText("Reste spectacle")).toHaveTextContent("15:00");
+  });
+
+  test("dès le premier instant de dépassement : signe moins et rouge", () => {
+    renderAt(T0 + 5 * MIN + 400, running());
+    const remaining = screen.getByLabelText("Reste scène");
+    expect(remaining).toHaveTextContent("-0:01");
+    expect(remaining).toHaveClass("text-red-500");
+  });
+
   test("dépassement : temps de scène négatif en rouge", () => {
     renderAt(T0 + 372_000, running());
     const remaining = screen.getByLabelText("Reste scène");

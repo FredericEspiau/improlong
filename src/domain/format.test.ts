@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 
-import { formatClock, formatDrift } from "./format";
+import { formatClock, formatCountdown, formatDrift } from "./format";
 
 describe("formatClock", () => {
   test.each([
@@ -25,5 +25,18 @@ describe("formatDrift", () => {
     [400, null],
   ])("%i ms s'affiche %j", (ms, expected) => {
     expect(formatDrift(ms)).toBe(expected);
+  });
+});
+
+describe("formatCountdown", () => {
+  test.each([
+    [300_000, "5:00"],
+    [299_500, "5:00"],
+    [240_001, "4:01"],
+    [0, "0:00"],
+    [-1, "-0:01"],
+    [-72_000, "-1:12"],
+  ])("%i ms s'affiche %s", (ms, expected) => {
+    expect(formatCountdown(ms)).toBe(expected);
   });
 });
