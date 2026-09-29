@@ -55,6 +55,7 @@ Les timers continuent de tourner pendant qu'on est en mode `édition`.
 Les contrôles sont:
 
 - possibilité d'afficher un message pour les comédiens sur scène, ce message sera affiché jusqu'à ce que le metteur en scène décide de le cacher en appuyant sur un bouton
+- des messages prédéfinis (ex. `Accélérez`, `Ralentissez`, `Dernière minute`, `Changez de lieu`) s'affichent en un seul appui, sans rien taper. Comme la trame, la liste est codée en dur dans `src/quickMessages.ts`
 - passer en mode `jeu`
 
 ### Mode `jeu`

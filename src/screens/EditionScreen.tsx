@@ -2,6 +2,8 @@ import { useState } from "react";
 
 import type { ShowAction } from "../domain/show";
 
+import { QUICK_MESSAGES } from "../quickMessages";
+
 interface EditionScreenProps {
   readonly dispatch: (action: ShowAction) => void;
   readonly message: null | string;
@@ -16,6 +18,20 @@ export function EditionScreen({ dispatch, message }: EditionScreenProps) {
 
       {message === null ? (
         <>
+          <div className="grid grid-cols-2 gap-4">
+            {QUICK_MESSAGES.map((quick) => (
+              <button
+                className="min-h-16 rounded-xl bg-line px-6 py-4 text-3xl font-bold active:brightness-125"
+                key={quick}
+                onClick={() => {
+                  dispatch({ text: quick, type: "showMessage" });
+                }}
+                type="button"
+              >
+                {quick}
+              </button>
+            ))}
+          </div>
           <label className="flex flex-col gap-2 text-2xl" htmlFor="message">
             Message pour les comédiens
           </label>

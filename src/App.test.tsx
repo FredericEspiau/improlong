@@ -123,4 +123,27 @@ describe("App", () => {
       screen.getByRole("button", { name: "Nouveau spectacle" }),
     ).toBeInTheDocument();
   });
+
+  test("message rapide : un tap l'affiche sans rien taper", () => {
+    render(<App trame={testTrame} />);
+    click("Démarrer");
+    click("Édition");
+    click("Accélérez");
+    click("Retour au jeu");
+    expect(screen.getByText("Accélérez")).toBeInTheDocument();
+  });
+
+  test("message rapide : proposé seulement quand aucun message n'est affiché", () => {
+    render(<App trame={testTrame} />);
+    click("Démarrer");
+    click("Édition");
+    click("Ralentissez");
+    expect(
+      screen.queryByRole("button", { name: "Accélérez" }),
+    ).not.toBeInTheDocument();
+    click("Cacher le message");
+    expect(
+      screen.getByRole("button", { name: "Accélérez" }),
+    ).toBeInTheDocument();
+  });
 });
