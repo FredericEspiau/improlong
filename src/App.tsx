@@ -5,9 +5,11 @@ import { EndScreen } from "./screens/EndScreen";
 import { PlayScreen } from "./screens/PlayScreen";
 import { PreparationScreen } from "./screens/PreparationScreen";
 import { useShow } from "./state/useShow";
+import { useWakeLock } from "./state/useWakeLock";
 
 export function App({ trame }: { readonly trame: Trame }) {
   const [state, dispatch] = useShow(trame);
+  useWakeLock(state.phase === "running");
 
   switch (state.phase) {
     case "finished": {
