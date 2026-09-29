@@ -3,7 +3,7 @@ import { describe, expect, test } from "vitest";
 import type { RunningState } from "./show";
 import type { Trame } from "./trame";
 
-import { computeTimers } from "./timers";
+import { computeTimers, WARNING_MS } from "./timers";
 
 const MIN = 60_000;
 const T0 = 1_000_000;
@@ -45,7 +45,9 @@ describe("computeTimers", () => {
       isLastScene: false,
       nextScene: "Fin",
       sceneElapsedMs: 0,
+      sceneProgress: 0,
       sceneRemainingMs: 10 * MIN,
+      sceneTone: "ok",
       showRemainingMs: 35 * MIN,
     });
   });
@@ -62,5 +64,50 @@ describe("computeTimers", () => {
     expect(timers.nextScene).toBeNull();
     expect(timers.isLastScene).toBe(true);
     expect(timers.showRemainingMs).toBe(24 * MIN);
+  });
+
+  describe("sceneTone", () => {
+    function toneWithRemaining(remainingMs: number) {
+      const elapsed = 5 * MIN - remainingMs;
+      return computeTimers(running({}), testTrame, T0 + elapsed).sceneTone;
+    }
+
+    test("ok tant qu'il reste plus d'une minute", () => {
+      expect(toneWithRemaining(WARNING_MS + 1)).toBe("ok");
+    });
+
+    test("warning à exactement une minute et jusqu'à 0", () => {
+      expect(toneWithRemaining(WARNING_MS)).toBe("warning");
+      expect(toneWithRemaining(1)).toBe("warning");
+      expect(toneWithRemaining(0)).toBe("warning");
+    });
+
+    test("overrun dès le premier instant de dépassement", () => {
+      expect(toneWithRemaining(-1)).toBe("overrun");
+    });
+  });
+
+  describe("sceneProgress", () => {
+    test("va de 0 à 1 sur la durée de la scène", () => {
+      expect(computeTimers(running({}), testTrame, T0).sceneProgress).toBe(0);
+      expect(
+        computeTimers(running({}), testTrame, T0 + 2.5 * MIN).sceneProgress,
+      ).toBe(0.5);
+      expect(
+        computeTimers(running({}), testTrame, T0 + 5 * MIN).sceneProgress,
+      ).toBe(1);
+    });
+
+    test("reste bornée à 1 en cas de dépassement", () => {
+      expect(
+        computeTimers(running({}), testTrame, T0 + 9 * MIN).sceneProgress,
+      ).toBe(1);
+    });
+
+    test("ne devient jamais négative si l'horloge recule", () => {
+      expect(
+        computeTimers(running({}), testTrame, T0 - MIN).sceneProgress,
+      ).toBe(0);
+    });
   });
 });

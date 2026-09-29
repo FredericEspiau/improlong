@@ -1,6 +1,8 @@
 import type { RunningState } from "./show";
 import type { Trame } from "./trame";
 
+export type SceneTone = "ok" | "overrun" | "warning";
+
 export interface Timers {
   readonly currentScene: string;
   readonly driftMs: number;
@@ -8,7 +10,12 @@ export interface Timers {
   readonly isLastScene: boolean;
   readonly nextScene: null | string;
   readonly sceneElapsedMs: number;
+  /**
+  Avancement de la scène de 0 à 1 (borné, même en dépassement).
+  */
+  readonly sceneProgress: number;
   readonly sceneRemainingMs: number;
+  readonly sceneTone: SceneTone;
   readonly showRemainingMs: number;
 }
 
@@ -17,6 +24,11 @@ Temps restant du spectacle = temps restant prévu de la scène en cours (jamais 
 + durées des scènes suivantes. Le retard d'une scène en dépassement sera compté
 dans le glissement au passage de scène, pas ici.
 */
+/**
+Il reste moins d'une minute : la scène passe en ambre.
+*/
+export const WARNING_MS = 60_000;
+
 export function computeTimers(
   state: RunningState,
   trame: Trame,
@@ -36,7 +48,20 @@ export function computeTimers(
     isLastScene: next === undefined,
     nextScene: next?.name ?? null,
     sceneElapsedMs,
+    sceneProgress: clamp(sceneElapsedMs / (current?.durationMs ?? 1)),
     sceneRemainingMs,
+    sceneTone: toneFor(sceneRemainingMs),
     showRemainingMs: Math.max(0, sceneRemainingMs) + followingMs,
   };
+}
+
+function clamp(value: number): number {
+  return Math.min(1, Math.max(0, value));
+}
+
+function toneFor(remainingMs: number): SceneTone {
+  if (remainingMs < 0) {
+    return "overrun";
+  }
+  return remainingMs <= WARNING_MS ? "warning" : "ok";
 }

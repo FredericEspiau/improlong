@@ -71,7 +71,9 @@ Exemple:
 
 Ce mode affichera de manière très claire pour qu'on puisse voir de loin:
 
-- un timer qui correspond au temps écoulé depuis le début du spectacle, le temps restant prévu pour le spectacle, le temps depuis le début de la scène et le temps prévu jusqu'à la fin de la scène, et le glissement s'il y en a un
+- quatre timers : le temps écoulé depuis le début du spectacle, le temps restant prévu pour le spectacle, le temps depuis le début de la scène et le temps prévu jusqu'à la fin de la scène, plus le glissement s'il y en a un
+- le temps restant de la scène est le timer principal : il est bien plus grand que les trois autres
+- une barre de progression sous ce timer montre l'avancement de la scène
 - un encart pour indiquer le nom de la scène actuelle dans la trame
 - un autre encart pour indiquer le nom de la scène suivante dans la trame
 
@@ -81,7 +83,11 @@ Le temps restant prévu pour le spectacle est la somme des durées prévues des 
 
 Exemple: spectacle de 45 minutes, la scène 1 dure 5 minutes comme prévu, la scène 2 prévue pour 5 minutes se termine à 4 minutes 30. Au passage à la scène 3, on affiche 35:00 restant pour le spectacle et `+30 s` de glissement.
 
-Si la scène en cours dépasse son temps prévu, le temps prévu jusqu'à la fin de la scène devient négatif et s'affiche en rouge (ex. `-1:12`).
+Dans la dernière minute d'une scène, le temps restant de la scène et la barre de progression passent en ambre.
+
+Si la scène en cours dépasse son temps prévu, le temps prévu jusqu'à la fin de la scène devient négatif et s'affiche en rouge (ex. `-1:12`), la barre reste pleine et passe aussi en rouge. Les couleurs ne sont jamais seules : le texte (signe `-`, chiffres) porte toujours l'information.
+
+À la dernière scène, il n'y a pas d'encart pour la scène suivante : l'encart de la scène actuelle prend toute la largeur.
 
 Pour la fin du spectacle, on n'affiche pas de scène suivante à la dernière scène et le bouton pour passer à la scène suivante devient `Terminer`.
 

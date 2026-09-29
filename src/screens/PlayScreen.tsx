@@ -1,4 +1,5 @@
 import type { RunningState, ShowAction } from "../domain/show";
+import type { SceneTone } from "../domain/timers";
 import type { Trame } from "../domain/trame";
 
 import { formatClock, formatCountdown, formatDrift } from "../domain/format";
@@ -38,7 +39,9 @@ export function PlayScreen({ dispatch, state, trame }: PlayScreenProps) {
   return (
     <main className="grid h-dvh grid-rows-[auto_1fr_auto] gap-6 p-6">
       <section className="grid grid-cols-2 gap-6">
-        <div className="rounded-2xl bg-surface p-6">
+        <div
+          className={`rounded-2xl bg-surface p-6 ${timers.nextScene === null ? "col-span-2" : ""}`}
+        >
           <span className="text-2xl text-ink-muted">Scène actuelle</span>
           <p className="text-6xl font-bold">{timers.currentScene}</p>
         </div>
@@ -50,16 +53,37 @@ export function PlayScreen({ dispatch, state, trame }: PlayScreenProps) {
         )}
       </section>
 
-      <section className="grid grid-cols-2 place-content-center gap-8">
-        <Clock label="Écoulé spectacle" ms={timers.elapsedMs} />
-        <Clock countdown label="Reste spectacle" ms={timers.showRemainingMs} />
-        <Clock label="Écoulé scène" ms={timers.sceneElapsedMs} />
+      <section className="flex flex-col justify-center gap-6">
         <Clock
           countdown
-          danger={timers.sceneRemainingMs < 0}
           label="Reste scène"
           ms={timers.sceneRemainingMs}
+          size="hero"
+          tone={timers.sceneTone}
         />
+        <div
+          aria-label="Avancement de la scène"
+          aria-valuemax={100}
+          aria-valuemin={0}
+          aria-valuenow={Math.round(timers.sceneProgress * 100)}
+          className="h-6 w-full rounded-full bg-line"
+          role="progressbar"
+        >
+          <div
+            className={`h-full rounded-full ${BAR_CLASS[timers.sceneTone]}`}
+            style={{ width: `${String(timers.sceneProgress * 100)}%` }}
+          />
+        </div>
+        <div className="grid grid-cols-3 gap-8">
+          <Clock label="Écoulé scène" ms={timers.sceneElapsedMs} size="small" />
+          <Clock label="Écoulé spectacle" ms={timers.elapsedMs} size="small" />
+          <Clock
+            countdown
+            label="Reste spectacle"
+            ms={timers.showRemainingMs}
+            size="small"
+          />
+        </div>
       </section>
 
       <footer className="flex items-center justify-between">
@@ -89,21 +113,31 @@ export function PlayScreen({ dispatch, state, trame }: PlayScreenProps) {
 
 function Clock({
   countdown = false,
-  danger = false,
   label,
   ms,
+  size,
+  tone = "ok",
 }: {
   readonly countdown?: boolean;
-  readonly danger?: boolean;
   readonly label: string;
   readonly ms: number;
+  readonly size: "hero" | "small";
+  readonly tone?: SceneTone;
 }) {
   return (
     <div className="flex flex-col items-center">
-      <span className="text-2xl text-ink-muted">{label}</span>
+      <span
+        className={
+          size === "hero"
+            ? "text-4xl text-ink-muted"
+            : "text-2xl text-ink-muted"
+        }
+      >
+        {label}
+      </span>
       <span
         aria-label={label}
-        className={`font-mono text-7xl font-bold tabular-nums ${danger ? "text-danger" : ""}`}
+        className={`font-mono leading-none font-bold tabular-nums ${size === "hero" ? "text-[min(18vw,28vh)]" : "text-[5vw]"} ${TEXT_CLASS[tone]}`}
         role="timer"
       >
         {countdown ? formatCountdown(ms) : formatClock(ms)}
@@ -123,3 +157,15 @@ function EditionButton({ onClick }: { readonly onClick: () => void }) {
     </button>
   );
 }
+
+const BAR_CLASS: Record<SceneTone, string> = {
+  ok: "bg-ok",
+  overrun: "bg-danger",
+  warning: "bg-warn",
+};
+
+const TEXT_CLASS: Record<SceneTone, string> = {
+  ok: "",
+  overrun: "text-danger",
+  warning: "text-warn",
+};

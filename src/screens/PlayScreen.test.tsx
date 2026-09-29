@@ -108,4 +108,66 @@ describe("PlayScreen", () => {
     fireEvent.click(screen.getByRole("button", { name: "Édition" }));
     expect(dispatch).toHaveBeenCalledWith({ type: "openEdition" });
   });
+
+  test("hiérarchie : 'Reste scène' est l'horloge principale, les autres sont plus petites", () => {
+    renderAt(T0 + MIN, running());
+    expect(screen.getByLabelText("Reste scène")).toHaveClass(
+      "text-[min(18vw,28vh)]",
+    );
+    for (const label of [
+      "Écoulé scène",
+      "Écoulé spectacle",
+      "Reste spectacle",
+    ]) {
+      expect(screen.getByLabelText(label)).toHaveClass("text-[5vw]");
+    }
+  });
+
+  test("dernière minute : le temps de scène passe en ambre", () => {
+    renderAt(T0 + 5 * MIN - 30_000, running());
+    const remaining = screen.getByLabelText("Reste scène");
+    expect(remaining).toHaveClass("text-warn");
+    expect(remaining).not.toHaveClass("text-danger");
+    expect(remaining).toHaveTextContent("0:30");
+  });
+
+  test("plus d'une minute restante : ni ambre ni rouge", () => {
+    renderAt(T0 + MIN, running());
+    const remaining = screen.getByLabelText("Reste scène");
+    expect(remaining).not.toHaveClass("text-warn");
+    expect(remaining).not.toHaveClass("text-danger");
+  });
+
+  test("barre de progression de la scène", () => {
+    renderAt(T0 + 2.5 * MIN, running());
+    const bar = screen.getByRole("progressbar", {
+      name: "Avancement de la scène",
+    });
+    expect(bar).toHaveAttribute("aria-valuenow", "50");
+  });
+
+  test("la barre reste à 100 % en cas de dépassement", () => {
+    renderAt(T0 + 9 * MIN, running());
+    expect(screen.getByRole("progressbar")).toHaveAttribute(
+      "aria-valuenow",
+      "100",
+    );
+  });
+
+  test("dernière scène : la carte 'Scène actuelle' prend toute la largeur", () => {
+    renderAt(
+      T0 + 6 * MIN,
+      running({ sceneIndex: 1, sceneStartedAt: T0 + 5 * MIN }),
+    );
+    expect(screen.getByText("Scène actuelle").parentElement).toHaveClass(
+      "col-span-2",
+    );
+  });
+
+  test("avec une scène suivante, chaque carte garde sa moitié", () => {
+    renderAt(T0 + MIN, running());
+    expect(screen.getByText("Scène actuelle").parentElement).not.toHaveClass(
+      "col-span-2",
+    );
+  });
 });
