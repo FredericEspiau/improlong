@@ -42,7 +42,7 @@ Il n'y aura qu'un client frontend qui fonctionnera sur une tablette Android.
 
 On aura trois modes:
 
-- mode `préparation` pour faire démarrer le spectacle, on affiche juste un bouton `Démarrer`
+- mode `préparation` pour faire démarrer le spectacle, on affiche un bouton `Démarrer`. Si la tablette a du réseau, on affiche aussi un rappel de passer en mode avion : avec du réseau, Android peut corriger l'heure en plein spectacle et fausser les timers. Le rappel disparaît dès que la tablette est hors-ligne
 - mode `jeu` qui affiche les informations pour les comédiens
 - mode `édition` pour contrôler ce qui est affiché à l'écran
 
