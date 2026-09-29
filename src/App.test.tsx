@@ -102,8 +102,25 @@ describe("App", () => {
     advance(5 * MIN);
     expect(screen.getByLabelText("Durée totale")).toHaveTextContent("46:00");
     click("Nouveau spectacle");
+    expect(screen.getByText("Spectacle terminé")).toBeInTheDocument();
+    click("Oui, effacer");
     expect(
       screen.getByRole("button", { name: "Démarrer" }),
+    ).toBeInTheDocument();
+  });
+
+  test("fin : on peut annuler la remise à zéro", () => {
+    render(<App trame={testTrame} />);
+    click("Démarrer");
+    for (const duration of [5, 5, 10, 25]) {
+      advance(duration * MIN);
+      click(duration === 25 ? "Terminer" : "Scène suivante");
+    }
+    click("Nouveau spectacle");
+    click("Annuler");
+    expect(screen.getByLabelText("Durée totale")).toHaveTextContent("45:00");
+    expect(
+      screen.getByRole("button", { name: "Nouveau spectacle" }),
     ).toBeInTheDocument();
   });
 });
