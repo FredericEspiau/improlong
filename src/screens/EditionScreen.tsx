@@ -20,7 +20,7 @@ export function EditionScreen({ dispatch, message }: EditionScreenProps) {
             Message pour les comédiens
           </label>
           <textarea
-            className="min-h-40 rounded-xl bg-neutral-900 p-4 text-3xl"
+            className="min-h-40 rounded-xl bg-surface p-4 text-3xl"
             id="message"
             onChange={(event) => {
               setDraft(event.target.value);
@@ -28,7 +28,7 @@ export function EditionScreen({ dispatch, message }: EditionScreenProps) {
             value={draft}
           />
           <button
-            className="rounded-xl bg-blue-600 px-8 py-4 text-3xl disabled:opacity-40"
+            className="rounded-xl bg-action px-8 py-4 text-3xl disabled:opacity-40"
             disabled={draft.trim() === ""}
             onClick={() => {
               dispatch({ text: draft, type: "showMessage" });
@@ -41,11 +41,11 @@ export function EditionScreen({ dispatch, message }: EditionScreenProps) {
         </>
       ) : (
         <>
-          <p className="rounded-xl bg-neutral-900 p-4 text-3xl">
+          <p className="rounded-xl bg-surface p-4 text-3xl">
             Message affiché : {message}
           </p>
           <button
-            className="rounded-xl bg-red-600 px-8 py-4 text-3xl"
+            className="rounded-xl bg-danger-strong px-8 py-4 text-3xl"
             onClick={() => {
               dispatch({ type: "hideMessage" });
             }}
@@ -57,7 +57,7 @@ export function EditionScreen({ dispatch, message }: EditionScreenProps) {
       )}
 
       <button
-        className="mt-auto rounded-xl bg-green-600 px-8 py-6 text-4xl font-bold"
+        className="mt-auto rounded-xl bg-ok px-8 py-6 text-4xl font-bold text-background"
         onClick={() => {
           dispatch({ type: "closeEdition" });
         }}

@@ -1,5 +1,20 @@
 @import "tailwindcss";
 
+/* Palette sombre à fort contraste (vérifiée par `node scripts/check-contrast.mjs`) */
+@theme {
+  --color-action: #2563eb;
+  --color-background: #020617;
+  --color-danger: #ef4444;
+  --color-danger-strong: #dc2626;
+  --color-ink: #f8fafc;
+  --color-ink-muted: #94a3b8;
+  --color-line: #334155;
+  --color-ok: #22c55e;
+  --color-ring: #ffffff;
+  --color-surface: #0e1223;
+  --color-warn: #f59e0b;
+}
+
 @layer base {
   html,
   body {
@@ -15,7 +30,7 @@
   }
 
   :focus-visible {
-    outline: 4px solid #fff;
+    outline: 4px solid var(--color-ring);
     outline-offset: 2px;
   }
 }

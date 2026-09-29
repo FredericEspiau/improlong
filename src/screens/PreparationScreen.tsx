@@ -11,7 +11,7 @@ export function PreparationScreen({
     <main className="flex h-dvh flex-col items-center justify-center gap-10 p-8">
       {online && (
         <p
-          className="max-w-3xl rounded-xl bg-amber-900 p-6 text-center text-3xl"
+          className="max-w-3xl rounded-xl border-4 border-warn bg-surface p-6 text-center text-3xl"
           role="alert"
         >
           Passe la tablette en mode avion avant de démarrer : avec du réseau,
@@ -20,7 +20,7 @@ export function PreparationScreen({
         </p>
       )}
       <button
-        className="rounded-2xl bg-green-600 px-16 py-10 text-6xl font-bold active:bg-green-700"
+        className="rounded-2xl bg-ok px-16 py-10 text-6xl font-bold text-background active:brightness-90"
         onClick={onStart}
         type="button"
       >

@@ -38,7 +38,7 @@ export function EndScreen({ onReset, state }: EndScreenProps) {
           </p>
           <div className="flex gap-6">
             <button
-              className="rounded-xl bg-neutral-700 px-8 py-4 text-2xl"
+              className="rounded-xl bg-line px-8 py-4 text-2xl"
               onClick={() => {
                 setConfirming(false);
               }}
@@ -47,7 +47,7 @@ export function EndScreen({ onReset, state }: EndScreenProps) {
               Annuler
             </button>
             <button
-              className="rounded-xl bg-red-600 px-8 py-4 text-2xl"
+              className="rounded-xl bg-danger-strong px-8 py-4 text-2xl"
               onClick={onReset}
               type="button"
             >
@@ -57,7 +57,7 @@ export function EndScreen({ onReset, state }: EndScreenProps) {
         </div>
       ) : (
         <button
-          className="mt-10 rounded-xl bg-neutral-700 px-8 py-4 text-2xl"
+          className="mt-10 rounded-xl bg-line px-8 py-4 text-2xl"
           onClick={() => {
             setConfirming(true);
           }}

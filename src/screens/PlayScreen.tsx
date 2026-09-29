@@ -38,16 +38,14 @@ export function PlayScreen({ dispatch, state, trame }: PlayScreenProps) {
   return (
     <main className="grid h-dvh grid-rows-[auto_1fr_auto] gap-6 p-6">
       <section className="grid grid-cols-2 gap-6">
-        <div className="rounded-2xl bg-neutral-900 p-6">
-          <span className="text-2xl text-neutral-400">Scène actuelle</span>
+        <div className="rounded-2xl bg-surface p-6">
+          <span className="text-2xl text-ink-muted">Scène actuelle</span>
           <p className="text-6xl font-bold">{timers.currentScene}</p>
         </div>
         {timers.nextScene !== null && (
-          <div className="rounded-2xl bg-neutral-900 p-6">
-            <span className="text-2xl text-neutral-400">Scène suivante</span>
-            <p className="text-6xl font-bold text-neutral-300">
-              {timers.nextScene}
-            </p>
+          <div className="rounded-2xl bg-surface p-6">
+            <span className="text-2xl text-ink-muted">Scène suivante</span>
+            <p className="text-6xl font-bold text-ink/80">{timers.nextScene}</p>
           </div>
         )}
       </section>
@@ -69,14 +67,14 @@ export function PlayScreen({ dispatch, state, trame }: PlayScreenProps) {
         {drift !== null && (
           <span
             aria-label="Glissement"
-            className={`text-4xl font-bold ${timers.driftMs > 0 ? "text-green-400" : "text-red-500"}`}
+            className={`text-4xl font-bold ${timers.driftMs > 0 ? "text-ok" : "text-danger"}`}
             role="status"
           >
             {drift}
           </span>
         )}
         <button
-          className="rounded-xl bg-blue-600 px-10 py-6 text-4xl font-bold active:bg-blue-700"
+          className="rounded-xl bg-action px-10 py-6 text-4xl font-bold active:brightness-90"
           onClick={() => {
             dispatch({ now: Date.now(), type: "next" });
           }}
@@ -102,10 +100,10 @@ function Clock({
 }) {
   return (
     <div className="flex flex-col items-center">
-      <span className="text-2xl text-neutral-400">{label}</span>
+      <span className="text-2xl text-ink-muted">{label}</span>
       <span
         aria-label={label}
-        className={`font-mono text-7xl font-bold tabular-nums ${danger ? "text-red-500" : ""}`}
+        className={`font-mono text-7xl font-bold tabular-nums ${danger ? "text-danger" : ""}`}
         role="timer"
       >
         {countdown ? formatCountdown(ms) : formatClock(ms)}
@@ -117,7 +115,7 @@ function Clock({
 function EditionButton({ onClick }: { readonly onClick: () => void }) {
   return (
     <button
-      className="rounded-xl bg-neutral-700 px-8 py-4 text-3xl active:bg-neutral-600"
+      className="rounded-xl bg-line px-8 py-4 text-3xl active:brightness-125"
       onClick={onClick}
       type="button"
     >

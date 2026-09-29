@@ -57,14 +57,14 @@ describe("PlayScreen", () => {
     renderAt(T0 + 5 * MIN + 400, running());
     const remaining = screen.getByLabelText("Reste scène");
     expect(remaining).toHaveTextContent("-0:01");
-    expect(remaining).toHaveClass("text-red-500");
+    expect(remaining).toHaveClass("text-danger");
   });
 
   test("dépassement : temps de scène négatif en rouge", () => {
     renderAt(T0 + 372_000, running());
     const remaining = screen.getByLabelText("Reste scène");
     expect(remaining).toHaveTextContent("-1:12");
-    expect(remaining).toHaveClass("text-red-500");
+    expect(remaining).toHaveClass("text-danger");
   });
 
   test("affiche le glissement", () => {
